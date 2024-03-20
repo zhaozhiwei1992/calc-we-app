@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { evaluateExpression } from './CalculatorUtils';
 
 interface Button {
   label: string;
@@ -49,7 +50,8 @@ const handleClick = (button: Button): void => {
   }else if(button.value === 'd'){
       expression.value = expression.value.slice(0, expression.value.length - 1);
   }else if (button.value === '=') {
-    expression.value = eval(expression.value);
+    // expression.value = eval(expression.value);
+    expression.value = evaluateExpression(expression.value);
   } else {
     expression.value += button.value;
   }
@@ -58,17 +60,19 @@ const handleClick = (button: Button): void => {
 
 <style scoped>
 .calculator {
-  width: 100%; /* 让计算器铺满整个页面 */
-  height: 100%; /* 让计算器铺满整个页面 */
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #ffffff; /* 背景色 */
 }
+
 .display {
-  height: 40vh; /* 占据页面的一半高度 */
+  height: 50vh;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  background-color: #fff;
+  background-color: #f0f0f0; /* 右边颜色 */
   padding: 10px;
 }
 
@@ -78,21 +82,35 @@ const handleClick = (button: Button): void => {
 
 .buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 5px;
+  grid-template-columns: repeat(4, auto); /* 自适应按钮宽度 */
+  gap: 10px; /* 按钮间距 */
+  margin: 5px; /* 左右间距 */
+  justify-content: space-evenly; /* 按钮水平间距均匀分布 */
 }
 
 button {
-  padding: 16px;
-  background-color: #eee;
+  width: 100%;
+  padding: 20px;
+  background-color: #4caf50; /* 默认按钮颜色 */
   border: none;
   cursor: pointer;
   border-radius: 10px; /* 圆角 */
-  flex-grow: 1; /* 让按钮铺满整个容器 */
-  font-size: 1.2em; /* 按钮文字大小 */
+  font-size: 1.2em;
+  text-align: center;
+  line-height: 1.2; /* 垂直居中 */
 }
 
 button:hover {
-  background-color: #ddd;
+  background-color: #8bc34a;
+}
+
+/* 设置第一行按钮的颜色为蓝色 */
+button:nth-child(-n+4) {
+  background-color: #2196f3;
+}
+
+/* 设置第四列按钮的颜色为蓝色 */
+button:nth-child(4n) {
+  background-color: #2196f3;
 }
 </style>
