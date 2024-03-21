@@ -22,8 +22,8 @@ interface Button {
 
 const expression = ref<string>('');
 const buttons: Button[] = [
-  { label: 'c', value: 'c' },
-  { label: 'd', value: 'd' },
+  { label: 'ac', value: 'c' },
+  { label: 'del', value: 'd' },
   { label: '%', value: '%' },
   { label: '/', value: '/' },
   { label: '7', value: '7' },
@@ -44,16 +44,27 @@ const buttons: Button[] = [
   { label: '=', value: '=' }
 ];
 
+// 如果操作了=号以后,再录入数字要清空
+let closeFlag = false;
+
 const handleClick = (button: Button): void => {
   if(button.value === 'c'){
       expression.value = '';
   }else if(button.value === 'd'){
       expression.value = expression.value.slice(0, expression.value.length - 1);
+  }else if (button.value === '@') {
+      // TODO 敬请期待
   }else if (button.value === '=') {
     // expression.value = eval(expression.value);
     expression.value = evaluateExpression(expression.value);
+    closeFlag = true;
   } else {
-    expression.value += button.value;
+    if(closeFlag){
+      expression.value = button.value;
+      closeFlag = false;
+    }else{
+      expression.value += button.value;
+    }
   }
 };
 </script>
@@ -113,4 +124,10 @@ button:nth-child(-n+4) {
 button:nth-child(4n) {
   background-color: #2196f3;
 }
+
+/*  设置@按钮的颜色为蓝色 */
+button:nth-child(17) {
+  background-color: #2196f3;
+}
+
 </style>
